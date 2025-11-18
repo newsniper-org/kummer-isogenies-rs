@@ -1,4 +1,4 @@
-use crate::field_types::*;
+use crate::{biguint_to_fp, field_types::*};
 use once_cell::sync::Lazy;
 use num_bigint::BigUint;
 
@@ -43,17 +43,6 @@ pub static PARAMS: Lazy<ParamsSecp256> = Lazy::new(|| {
 
     ParamsSecp256 { e, l, p, mu, k, gens, strategy }
 });
-
-
-fn biguint_to_fp(val: BigUint) -> Fp {
-    let digits = val.to_u64_digits();
-    let mut result = [0u64; 4];
-    let minlen = digits.len().min(4usize);
-    for i in 0..minlen {
-        result[i] = digits[i];
-    }
-    Fp::new(result)    
-}
 
 #[inline(always)]
 const fn load_strategy() -> [usize; EXP] {

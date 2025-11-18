@@ -24,7 +24,7 @@ impl<T: MessageEncodable> MessageEncodable for [T] {
 }
 
 
-pub fn encode<const L: usize, Msg: MessageEncodable>(m: &[Msg; L], n: &[Msg; L]) -> (bool, [Vec<bool>; 4]) {
+pub fn encode<const L: usize, Msg: UnitMessageEncodable>(m: &[Msg; L], n: &[Msg; L]) -> (bool, [Vec<bool>; 4]) {
     let m_encoded = m.encode();
     let n_encoded = n.encode();
 
@@ -42,7 +42,7 @@ pub fn encode<const L: usize, Msg: MessageEncodable>(m: &[Msg; L], n: &[Msg; L])
 
     let mut first_add = m_encoded[0];
 
-    for i in 1..(8*L) {
+    for i in 1..(Msg::SIZE*L) {
         let mm = m_encoded[i-1] ^ m_encoded[i];
         let nn = n_encoded[i-1] ^ n_encoded[i];
         let mn = mm ^ nn;
